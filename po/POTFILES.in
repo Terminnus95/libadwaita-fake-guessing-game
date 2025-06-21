@@ -1,0 +1,8 @@
+# List of source files containing translatable strings.
+# Please keep this file sorted alphabetically.
+data/demo.terminnus.fakeguessinggame.desktop.in
+data/demo.terminnus.fakeguessinggame.metainfo.xml.in
+data/demo.terminnus.fakeguessinggame.gschema.xml
+src/main.py
+src/window.py
+src/window.blp
