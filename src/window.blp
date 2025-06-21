@@ -32,7 +32,8 @@ template $FakeGuessingGameWindow: Adw.ApplicationWindow {
       "thinking" to then be used in the «finish» page
       */
       Adw.NavigationPage input_page {
-        title: "page 01";
+        title: "Input Page";
+        tag: "input_page";
 
         Box {
           orientation: vertical;
@@ -82,11 +83,10 @@ template $FakeGuessingGameWindow: Adw.ApplicationWindow {
 
           // Number entry
           Entry number_entry {
+            margin-bottom: 10;
             input-purpose: digits;
             placeholder-text: _("Type your number");
           }
-
-          Box { margin-bottom: 10; } // A quick little box for padding
 
           // Guess button (this button goes over to the next page)
           Button guess_button {
@@ -102,28 +102,64 @@ template $FakeGuessingGameWindow: Adw.ApplicationWindow {
       }
 
       /*
-      #
-      # LOADING PAGE
-      #
+      ################
+      # LOADING PAGE #
+      ################
+      This page presents the user with a simple loading screen to make
+      the user believe that the aplication is doing something complex
+      in the background, it also has a dynamic label that show the
+      "current" step, their content is random
       */
       Adw.NavigationPage loading_page {
-        title: "page-02";
+        title: "Loading Page";
+        tag: "loading_page";
 
         Box {
           orientation: vertical;
           halign: center;
           valign: center;
 
+          // Spinner
+          Adw.Spinner {
+            margin-bottom: 10;
+            width-request: 64;
+            height-request: 64;
+          }
+
+          // Title
           Label {
-            label: _("WIP");
+            margin-bottom: 10;
+            label: _("Reading Your Mind");
 
             styles [
               "title-1"
             ]
           }
-        }
 
+          // Dynamic loading message
+          Label loading_message {
+            label: _("[PLACEHOLDER]");
+          }
+        }
       }
+      /*
+      ###############
+      # FINISH PAGE #
+      ###############
+      This is the last page of all the program, this page will show the number
+      the user inputted among with other things
+      */
+      Adw.NavigationPage finish_page {
+        title: "Finish Page";
+        Label {
+          label: _("WIP");
+
+          styles [
+            "title-1"
+          ]
+        }
+      }
+
     }
   };
 }

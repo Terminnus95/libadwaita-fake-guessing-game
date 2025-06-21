@@ -18,22 +18,72 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 from gi.repository import Gtk, Gio, Adw
+import time, random, threading
 
 @Gtk.Template(resource_path='/demo/terminnus/fakeguessinggame/window.ui')
 class FakeGuessingGameWindow(Adw.ApplicationWindow):
     __gtype_name__ = 'FakeGuessingGameWindow'
 
-    number_entry = Gtk.Template.Child()
     master = Gtk.Template.Child()
+
+    # Widgets from the «input_page»
+    number_entry = Gtk.Template.Child()
+
+    # Widgets from the «loading_page»
     loading_page = Gtk.Template.Child()
+    loading_message = Gtk.Template.Child()
+
+    # Widgets from the «finish_page»
+    finish_page = Gtk.Template.Child()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+
+        #Inicialize «modify_loading_message()» on a separate thread
+        modify_loading_message_thread = threading.Thread(target=self.modify_loading_message, daemon=True)
+        modify_loading_message_thread.start()
+        #Inicialize «hange_loading_page_to_finish_page()» on a separate thread
+        change_loading_page_thread = threading.Thread(target=self.change_loading_page_to_finish_page, daemon=True)
+        change_loading_page_thread.start()
 
         ###########
         # ACTIONS #
         ###########
         self.create_action("guess", self.on_guess)
+
+    ######################
+    # LOADING PAGE LOGIC #
+    ######################
+    def modify_loading_message(self, *kwargs):
+        """
+        This piece of code will modify loading_message's label every 1-2 seconds
+        to a string on «messages»
+        """
+        messages = ["Initiating Mind Reading Algorithm", "Analyzing Neural Patterns",
+        "Decoding Cerebral Signals", "Identifying Neural Pathways",
+        "Initiating Deep Scan", "Initiating Quantum Neural Inference",
+        "Extracting Numeric Imprint", "Establishing a Secure Brainwave Connection",
+        "Parsing Synaptic Data", "Tapping Into Short-term Memory", "Filtering Thoughts"]
+
+        while True:
+            #Just change the message if the current page is the «loading_page»
+            if self.master.get_visible_page().get_tag() == "loading_page":
+                print("changed!")
+                self.loading_message.set_label(random.choice(messages))
+                time.sleep(random.randint(2, 5)) #Wait some time before changing it again
+
+    def change_loading_page_to_finish_page(self, *kwargs):
+        """
+        This function will change the page from «loading_page» to «finish_page»
+        after some time
+        """
+        while True:
+            if self.master.get_visible_page().get_tag() == "loading_page":
+                time.sleep(random.randint(10, 25))
+                print("change page!")
+                self.master.push(self.finish_page)
+                break
+
 
     ###################
     # ACTION FUNCIONS #
@@ -56,10 +106,11 @@ class FakeGuessingGameWindow(Adw.ApplicationWindow):
 
             #If all is correct, move over to the next page
             self.master.push(self.loading_page)
+            #print(self.master.get_visible_page().get_tag())
 
-        except Exception:
+        except Exception as e:
         #If not, show a banner warning the user [NOT CURRENTLY WORKING]
-            print("invalid sring")
+            print(f"invalid sring{e}")
             banner = Adw.Banner(title="Invalid value",
             button_label="ok")
             banner.set_revealed(True)
