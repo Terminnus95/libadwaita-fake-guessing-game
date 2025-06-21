@@ -17,14 +17,67 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from gi.repository import Adw
-from gi.repository import Gtk
+from gi.repository import Gtk, Gio, Adw
 
 @Gtk.Template(resource_path='/demo/terminnus/fakeguessinggame/window.ui')
 class FakeGuessingGameWindow(Adw.ApplicationWindow):
     __gtype_name__ = 'FakeGuessingGameWindow'
 
-    label = Gtk.Template.Child()
+    number_entry = Gtk.Template.Child()
+    master = Gtk.Template.Child()
+    loading_page = Gtk.Template.Child()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+
+        ###########
+        # ACTIONS #
+        ###########
+        self.create_action("guess", self.on_guess)
+
+    ###################
+    # ACTION FUNCIONS #
+    ###################
+    def on_guess(self, *args):
+        """
+        This funcion is the effect of presing the «guess» button on the
+        first page, this will do the following:
+        *Check if the string inputted only contains numbers
+        if not, show a banner teling the user to ajust their input.
+        *if the string just contains numbers, go over to the second page
+        """
+
+        guess = self.number_entry.get_text()
+
+        #Try to convert the guess into a int to check if the guess is a pure integer
+        try:
+            int(guess)
+            print("valid string")
+
+            #If all is correct, move over to the next page
+            self.master.push(self.loading_page)
+
+        except Exception:
+        #If not, show a banner warning the user [NOT CURRENTLY WORKING]
+            print("invalid sring")
+            banner = Adw.Banner(title="Invalid value",
+            button_label="ok")
+            banner.set_revealed(True)
+
+
+        print(guess)
+
+    def create_action(self, name, callback, shortcuts=None):
+        """Add an application action.
+
+        Args:
+            name: the name of the action
+            callback: the function to be called when the action is
+            activated
+            shortcuts: an optional list of accelerators
+        """
+        action = Gio.SimpleAction.new(name, None)
+        action.connect("activate", callback)
+        self.add_action(action)
+        if shortcuts:
+            self.set_accels_for_action(f"app.{name}", shortcuts)

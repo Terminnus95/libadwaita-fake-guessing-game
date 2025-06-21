@@ -51,14 +51,14 @@ class FakeGuessingGameApplication(Adw.Application):
 
     def on_about_action(self, *args):
         """Callback for the app.about action."""
-        about = Adw.AboutDialog(application_name='fake-guessing-game',
+        about = Adw.AboutDialog(application_name='Fake Guessing Game',
                                 application_icon='demo.terminnus.fakeguessinggame',
                                 developer_name='Terminnus',
                                 version='0.1.0',
                                 developers=['Terminnus'],
                                 copyright='© 2025 Terminnus')
         # Translators: Replace "translator-credits" with your name/username, and optionally an email or URL.
-        about.set_translator_credits(_('translator-credits'))
+        about.set_translator_credits(_("transtator-credits"))
         about.present(self.props.active_window)
 
     def on_preferences_action(self, widget, _):
