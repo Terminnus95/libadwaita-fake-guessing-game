@@ -22,144 +22,186 @@ template $FakeGuessingGameWindow: Adw.ApplicationWindow {
         menu-model: primary_menu;
       }
     }
-    Adw.NavigationView master {
 
-      /*
-      ##############
-      # INPUT PAGE #
-      ##############
-      This is the starting page where the user will input the number you are
-      "thinking" to then be used in the «finish» page
-      */
-      Adw.NavigationPage input_page {
-        title: "Input Page";
-        tag: "input_page";
+    Adw.ToastOverlay toast_overlay {
+      Adw.NavigationView master {
 
-        Box {
-          orientation: vertical;
-          halign: center;
-          valign: center;
+        /*
+        ##############
+        # INPUT PAGE #
+        ##############
+        This is the starting page where the user will input the number you are
+        "thinking" to then be used in the «finish» page
+        */
+        Adw.NavigationPage input_page {
+          title: "Input Page";
+          tag: "input_page";
 
-          /*
-          #########################
-          # WELCOME "STATUS PAGE" #
-          #########################
+          Box {
+            orientation: vertical;
+            halign: center;
+            valign: center;
 
-          Q: Why you didn't you use Adw.StatusPage?
-          A: The text didnt extend properly it was all squished,
-          so I simply decided to make the "status page" manually.
-          */
+            /*
+            #########################
+            # WELCOME "STATUS PAGE" #
+            #########################
 
-          // Welcome image (see README.md for image credits and source)
-          Image welcome {
-            margin-bottom: 10;
-            icon-name: "welcome";
-            pixel-size: 150;
+            Q: Why you didn't you use Adw.StatusPage?
+            A: The text didnt extend properly it was all squished,
+            so I simply decided to make the "status page" manually.
+            */
+
+            // Welcome image (see README.md for image credits and source)
+              Image welcome {
+              margin-bottom: 10;
+              icon-name: "welcome";
+              pixel-size: 150;
+            }
+
+            // Title
+            Label title{
+              margin-bottom: 10;
+              label: _("Welcome");
+
+              styles [
+                "title-1"
+              ]
+            }
+
+            // Brief instructions
+            Label {
+              margin-bottom: 10;
+              label: _("Think of a number and I will guess it");
+            }
+
+            /*
+            ##############
+            # ENTRY AREA #
+            ##############
+            This area where all the «entry» things are stored
+            heres the textbox and the button to move on
+            */
+
+            // Number entry
+            Entry number_entry {
+              margin-bottom: 10;
+              input-purpose: digits;
+              placeholder-text: _("Type your number");
+            }
+
+            // Guess button (this button goes over to the next page)
+            Adw.Clamp {
+              maximum-size: 150;
+
+              Button guess_button {
+                label: _("Guess");
+                action-name: "win.guess";
+
+                styles [
+                  "pill",
+                  "suggested-action"
+                ]
+              }
+            }
           }
+        }
 
-          // Title
-          Label title{
-            margin-bottom: 10;
-            label: _("Welcome");
+        /*
+        ################
+        #LOADING PAGE #
+        ################
+        This page presents the user with a simple loading screen to make
+        the user believe that the aplication is doing something complex
+        in the background, it also has a dynamic label that show the
+        "current" step, their content is random
+        */
+        Adw.NavigationPage loading_page {
+          title: "Loading Page";
+          tag: "loading_page";
 
-            styles [
-              "title-1"
-            ]
+          Box {
+            orientation: vertical;
+            halign: center;
+            valign: center;
+
+            // Spinner
+            Adw.Spinner {
+              margin-bottom: 10;
+              width-request: 64;
+              height-request: 64;
+            }
+
+            // Title
+            Label {
+              margin-bottom: 10;
+              label: _("Reading Your Mind");
+
+              styles [
+                "title-1"
+              ]
+            }
+
+            // Dynamic loading message
+            Label loading_message {
+              label: _("[PLACEHOLDER]");
+            }
           }
+        }
 
-          // Brief instructions
-          Label {
-            margin-bottom: 10;
-            label: _("Think of a number and I will guess it");
-          }
+        /*
+        ###############
+        # FINISH PAGE #
+        ###############
+        This is the last page of all the program, this page will show the number
+        the user inputted among with other things
+        */
+        Adw.NavigationPage finish_page {
+          title: "Finish Page";
+            tag: "finish_page";
 
-          /*
-          ##############
-          # ENTRY AREA #
-          ##############
-          This area where all the «entry» things are stored
-          heres the textbox and the button to move on
-          */
+            Box {
+              orientation: vertical;
+              halign: center;
+              valign: center;
 
-          // Number entry
-          Entry number_entry {
-            margin-bottom: 10;
-            input-purpose: digits;
-            placeholder-text: _("Type your number");
-          }
+            // Simple "title" label
+            Label {
+              margin-bottom: 10;
+              label: _("The Number you are Thinking is:");
 
-          // Guess button (this button goes over to the next page)
-          Button guess_button {
-            label: _("Guess");
-            action-name: "win.guess";
+              styles [
+                "title-4"
+              ]
+            }
 
-            styles [
-              "pill",
-              "suggested-action"
-            ]
+            // The label where the number that the user inputted earlier is shown
+            Label number_label {
+              margin-bottom: 10;
+              label: _("[PLACEHOLDER]");
+
+              styles [
+                "title-1"
+              ]
+            }
+
+            // The «Quit» button
+            Adw.Clamp {
+              maximum-size: 175;
+
+                Button {
+                label: _("Quit");
+                action-name: "app.quit";
+
+                styles [
+                  "pill",
+                  "destructive-action"
+                ]
+              }
+            }
           }
         }
       }
-
-      /*
-      ################
-      # LOADING PAGE #
-      ################
-      This page presents the user with a simple loading screen to make
-      the user believe that the aplication is doing something complex
-      in the background, it also has a dynamic label that show the
-      "current" step, their content is random
-      */
-      Adw.NavigationPage loading_page {
-        title: "Loading Page";
-        tag: "loading_page";
-
-        Box {
-          orientation: vertical;
-          halign: center;
-          valign: center;
-
-          // Spinner
-          Adw.Spinner {
-            margin-bottom: 10;
-            width-request: 64;
-            height-request: 64;
-          }
-
-          // Title
-          Label {
-            margin-bottom: 10;
-            label: _("Reading Your Mind");
-
-            styles [
-              "title-1"
-            ]
-          }
-
-          // Dynamic loading message
-          Label loading_message {
-            label: _("[PLACEHOLDER]");
-          }
-        }
-      }
-      /*
-      ###############
-      # FINISH PAGE #
-      ###############
-      This is the last page of all the program, this page will show the number
-      the user inputted among with other things
-      */
-      Adw.NavigationPage finish_page {
-        title: "Finish Page";
-        Label {
-          label: _("WIP");
-
-          styles [
-            "title-1"
-          ]
-        }
-      }
-
     }
   };
 }
