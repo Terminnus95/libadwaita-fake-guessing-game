@@ -36,7 +36,6 @@ class FakeGuessingGameApplication(Adw.Application):
                          resource_base_path='/demo/terminnus/fakeguessinggame')
         self.create_action('quit', lambda *_: self.quit(), ['<primary>q'])
         self.create_action('about', self.on_about_action)
-        self.create_action('preferences', self.on_preferences_action)
 
     def do_activate(self):
         """Called when the application is activated.
@@ -53,17 +52,16 @@ class FakeGuessingGameApplication(Adw.Application):
         """Callback for the app.about action."""
         about = Adw.AboutDialog(application_name='Fake Guessing Game',
                                 application_icon='demo.terminnus.fakeguessinggame',
+                                website="https://github.com/Terminnus95/libadwaita-fake-guessing-game",
                                 developer_name='Terminnus',
                                 version='0.1.0',
-                                developers=['Terminnus'],
-                                copyright='© 2025 Terminnus')
+                                developers=["Terminnus"],
+                                artists=["ByteSeb"],
+                                copyright='© 2025 Terminnus',
+                                license_type=Gtk.License.GPL_3_0_ONLY)
         # Translators: Replace "translator-credits" with your name/username, and optionally an email or URL.
-        about.set_translator_credits(_("transtator-credits"))
+        #about.set_translator_credits(_("transtator-credits"))
         about.present(self.props.active_window)
-
-    def on_preferences_action(self, widget, _):
-        """Callback for the app.preferences action."""
-        print('app.preferences action activated')
 
     def create_action(self, name, callback, shortcuts=None):
         """Add an application action.

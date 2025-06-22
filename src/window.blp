@@ -53,7 +53,7 @@ template $FakeGuessingGameWindow: Adw.ApplicationWindow {
             */
 
             // Welcome image (see README.md for image credits and source)
-              Image welcome {
+            Image welcome {
               margin-bottom: 10;
               icon-name: "welcome";
               pixel-size: 150;
@@ -168,7 +168,7 @@ template $FakeGuessingGameWindow: Adw.ApplicationWindow {
             // Simple "title" label
             Label {
               margin-bottom: 10;
-              label: _("The Number you are Thinking is:");
+              label: _("The number you are thinking of is:");
 
               styles [
                 "title-4"
@@ -208,10 +208,6 @@ template $FakeGuessingGameWindow: Adw.ApplicationWindow {
 
 menu primary_menu {
   section {
-    item {
-      label: _("_Preferences");
-      action: "app.preferences";
-    }
 
     item {
       label: _("_Keyboard Shortcuts");

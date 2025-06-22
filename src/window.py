@@ -75,18 +75,21 @@ class FakeGuessingGameWindow(Adw.ApplicationWindow):
         """
 
         # This list contains all of the messages that the label could possibly get
-        messages = ["Initiating Mind Reading Algorithm", "Analyzing Neural Patterns",
-        "Decoding Cerebral Signals", "Identifying Neural Pathways",
-        "Initiating Deep Scan", "Initiating Quantum Neural Inference",
-        "Extracting Numeric Imprint", "Establishing a Secure Brainwave Connection",
-        "Parsing Synaptic Data", "Tapping Into Short-term Memory", "Filtering Thoughts"]
+        messages = ["Initiating mind reading algorithm", "Analyzing neural patterns",
+        "Decoding cerebral signals", "Identifying neural pathways",
+        "Initiating deep Scan", "Initiating quantum neural inference",
+        "Extracting numeric imprint", "Establishing a secure brainwave connection",
+        "Parsing synaptic data", "Tapping into short-term memory", "Filtering thoughts"]
 
         while True:
             #Just change the message if the current page is the «loading_page»
             if self.master.get_visible_page().get_tag() == "loading_page":
-                print("changed!")
+
+                #DEBUG: print("changed!")
+
                 self.loading_message.set_label(random.choice(messages))
                 time.sleep(random.randint(2, 5)) #Wait some time before changing it again
+
             #Break the loop when the page becomes «finish_page»
             elif self.master.get_visible_page().get_tag() == "finish_page":
                 break
@@ -99,7 +102,9 @@ class FakeGuessingGameWindow(Adw.ApplicationWindow):
         while True:
             if self.master.get_visible_page().get_tag() == "loading_page":
                 time.sleep(random.randint(10, 25)) # Wait before changing
-                print("change page!")
+
+                #DEBUG: print("change page!")
+
                 self.master.push(self.finish_page) # Changing the page
                 break
 
@@ -122,20 +127,21 @@ class FakeGuessingGameWindow(Adw.ApplicationWindow):
         	#Try to convert the guess into a int to check if the guess only contains numbers
             int(guess)
 
-            print("valid string")
+            #DEBUG: print("valid string")
 
 			#If it is an int, move over to the next page and make the text in «number_label» into «guess»
             self.master.push(self.loading_page)
             self.number_label.set_label(guess)
 
         except ValueError:
-        	print("invalid sring")
 
-        #If not, show a toast
-        	toast = Adw.Toast(title="Only Numbers are Accepted", timeout=2)
+        	#DEBUG print("invalid sring")
+
+            #If not, show a toast
+        	toast = Adw.Toast(title="Only numbers are accepted", timeout=2)
         	self.toast_overlay.add_toast(toast)
 
-        print(guess)
+        #DEBUG: print(guess)
 
 	########
 	# MISC #
